@@ -52,8 +52,19 @@ const defaultItems = [item1 , item2 , item3];
 // })
 
 app.get("/", function(req, res) {
+
+// data rendering from data base by mongoose .
 Item.find({} , function(error , foundItems){
-  console.log(foundItems);
+  // console.log(foundItems);
+if(foundItems.length==0){
+  Item.insertMany(defaultItems,function(err){
+  console.log("Default Items stored Suceesfully ");
+  // console.log(err);
+})
+}
+
+
+
   res.render("list", {listTitle: day, newListItems: foundItems});
 })
 
