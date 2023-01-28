@@ -13,29 +13,45 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 // Mongoose
-main().catch(err => console.log(err));
-
-async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/todoListData');
+mongoose.set('strictQuery', true);
+mongoose.connect('mongodb://127.0.0.1:27017/todoListData' , {useNewUrlParser: true});
   
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
-}
+
   
 // // Schema is created 
 // => Ist Step 
-const itmeSchema = {
-  name:String
+const itmeSchema = new mongoose.Schema({
+  name:String,
 
-}
+})
 
 // // Then model is created 
 const Item = mongoose.model("Item",itmeSchema);
 // // 
 
 // // Mongoose doucment is created below
-const goToLab =  new Item({
-  name:"goToWork"
+const item1 =  new Item({
+  name:"Go to Work" 
+});
+
+const item2 =  new Item({
+  name:"Buy Groceries" 
 })
+
+const item3 =  new Item({
+  name:"complete Assignement" 
+})
+ 
+const defaultItems = [item1 , item2 , item3];
+
+// // InsetMany option in the Mongoose to inset the array of the default items 
+Item.insertMany(defaultItems,function(err){
+  console.log("Default Items stored Suceesfully");
+  // console.log(err);
+ 
+})
+
+
 
 app.get("/", function(req, res) {
 
