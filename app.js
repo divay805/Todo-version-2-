@@ -45,19 +45,21 @@ const item3 =  new Item({
 const defaultItems = [item1 , item2 , item3];
 
 // // InsetMany option in the Mongoose to inset the array of the default items 
-Item.insertMany(defaultItems,function(err){
-  console.log("Default Items stored Suceesfully");
-  // console.log(err);
- 
-})
 
-
+// Item.insertMany(defaultItems,function(err){
+//   console.log("Default Items stored Suceesfully ");
+//   // console.log(err);
+// })
 
 app.get("/", function(req, res) {
+Item.find({} , function(error , foundItems){
+  console.log(foundItems);
+  res.render("list", {listTitle: day, newListItems: foundItems});
+})
 
 const day = date.getDate();
 
-  res.render("list", {listTitle: day, newListItems: items});
+
 
 });
 
